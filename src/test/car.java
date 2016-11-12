@@ -1,7 +1,7 @@
 package test;
 
 
-public class car{
+public class car {
 	private String carId="001";
 	private String carColor="red";
 	

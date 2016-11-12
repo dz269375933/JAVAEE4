@@ -1,6 +1,6 @@
 package test;
 
-public class office{
+public class office {
    private String officeId;
 
 	public String getOfficeId() {

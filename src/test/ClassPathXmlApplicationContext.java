@@ -72,7 +72,8 @@ public class ClassPathXmlApplicationContext extends ApplicationContext {
 			  
 			  for (Constructor<?> con : cl.getConstructors()) {
 				  if (con.isAnnotationPresent(Autowired.class)) {
-					  //List<String> names=new ArrayList<String>();
+					  List<String> names=new ArrayList<String>();
+					  List<Class> classes=new ArrayList<Class>();
 					  Class [] parameterTypes = con.getParameterTypes();
 					 for(Class c:parameterTypes){
 						 //将属性依次实例化
@@ -80,19 +81,24 @@ public class ClassPathXmlApplicationContext extends ApplicationContext {
 							 
 							 this.putMap(c.getName(), install(c.getName(), null, null));
 						 }
-						//names.add(c.getName());
+						 if(c.getName().startsWith("test.")){
+							 names.add(c.getName().substring("test.".length()));
+						 }else{
+							 names.add(c.getName());
+						 }
+						
 						//System.out.println(c.getName());
+						classes.add(c);
 						 //实例化结束
 					 }
-					car=(car) beans.get("car");
-					office=(office) beans.get("office");
-					/* Object[] objects=new Object[names.size()];
-					 for(int i=0;i<names.size();i++){
-						 objects[i]=names.get(i);
-						//System.out.println(objects[i]);
-					 }*/
 					
-					 Object obj=con.newInstance(car,office);
+					Object[] objects=new Object[names.size()];
+					 for(int i=0;i<names.size();i++){
+						 objects[i]=beans.get(names.get(i));
+						
+					 }
+					
+					 Object obj=con.newInstance(objects);
 					 
 					 this.putMap(className, obj);
 					
